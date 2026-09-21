@@ -10,9 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build APK with kivy/buildozer image
+      - name: Set up build tools
         run: |
-          docker run --rm -v "$(pwd)":/home/user/hostcwd kivy/buildozer:latest android debug
+          sudo apt-get update
+          sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip \
+            autoconf libtool pkg-config zlib1g-dev libncurses5-dev \
+            libncursesw5-dev cmake libffi-dev libssl-dev
+          pip3 install --upgrade Cython==0.29.33 buildozer
+      - name: Build APK
+        run: buildozer -v android debug
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
