@@ -10,10 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build with buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
-        with:
-          command: buildozer android debug
+      - name: Build APK with kivy/buildozer image
+        run: |
+          docker run --rm -v "$(pwd)":/home/user/hostcwd kivy/buildozer:latest android debug
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
